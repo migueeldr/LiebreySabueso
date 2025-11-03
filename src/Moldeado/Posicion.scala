@@ -1,3 +1,4 @@
+package Moldeado
 import scala.util.Random
 trait TableroJuego:
   // --- Devuelve las posiciones accesibles desde una posición ---
@@ -38,7 +39,7 @@ case class Posicion(col: Columna, fila: Fila):
     def y: Int = fila.y
 
 
-  object TableroClasicoLyS extends TableroJuego:
+object TableroClasicoLyS extends TableroJuego:
     // --- Pintado ---
     private def pintarNodo(p: Posicion, estado: Estado): String =
 
@@ -98,33 +99,11 @@ case class Posicion(col: Columna, fila: Fila):
 
     override def posicionMetaLiebre: Posicion =
       I2M
-enum Jugador(val y: Int):
-  case sabuesos extends Jugador(1)
-  case liebre extends Jugador (2)
-def sortearTurno(): Jugador =
-  val r = Random.nextInt(2)
-  if r == 0 then Jugador.sabuesos
-  else        Jugador.liebre
-case class Estado (liebre: Posicion, sabuesos: Set[Posicion], turno: Jugador):
-  def ocupadas: Set[Posicion]=
-    sabuesos+liebre
 
-val nuevoEstado = Estado(
-    val nuevaliebre: Posicion=Dest
-    liebre = nuevaLiebre,
-    sabuesos = estado.sabuesos,
-    turno = Jugador.sabuesos
-  )
-sealed trait MovimientoFicha:
-  def movimientosPosibles(tablero: TableroJuego, estado: Estado): Set[Posicion]
-
-case object MovimientoLiebre extends MovimientoFicha:
-  override def movimientosPosibles(tablero: TableroJuego, estado: Estado): Set[Posicion] =
-    tablero.movimientosDesde(estado.liebre).filterNot(estado.ocupadas.contains)
-
-case object MovimientoSabueso extends MovimientoFicha:
-  override def movimientosPosibles(tablero: TableroJuego, estado: Estado): Set[Posicion] =
-    estado.sabuesos.flatMap { s =>
-      tablero.movimientosDesde(s).filterNot(p =>p.x < s.x).filterNot(estado.ocupadas.contains)
-    }
-def esFinPartida(estado: Estado): Option[Jugador]=
+    override def esFinPartida(estado: Estado): Option[Jugador] =
+      if estado.liebre == posicionMetaLiebre then
+        Some(Jugador.liebre)
+      else if MovimientoLiebre.movimientosPosibles(TableroClasicoLyS, estado).isEmpty then
+        Some(Jugador.sabuesos)
+      else
+        None
