@@ -47,3 +47,4 @@ case object MovimientoSabueso extends MovimientoFicha:
         .map(dest => (origen, dest))
     }
 
+//comit
