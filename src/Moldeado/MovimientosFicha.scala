@@ -42,15 +42,14 @@ case object MovimientoLiebre extends MovimientoFicha:
       tab.movimientosDesde(origen)
         .filter(dest => dest.x >= origen.x && !est.ocupadas.contains(dest))
         .map(dest => (origen, dest))
-  def evaluarMovimiento(tablero: TableroJuego, estado: Estado, origen: Posicion, destino: Posicion): (Int, Int, Int) =
+  def evaluarMovimiento(tablero: TableroJuego, estado: Estado, origen: Posicion, destino: Posicion): (Int, Int) =
   val nuevosSabuesos = estado.sabuesos - origen + destino
   val distLiebre =
       val antes = origen.manhattan(estado.liebre)
       val despues = destino.manhattan(estado.liebre)
       (antes - despues)
-  val movilidadLiebre = MovimientoLiebre.movimientosPosibles(tablero, estado.copy(sabuesos = nuevosSabuesos)).size
-  val huecoMax= huecoMaximoEnX(nuevosSabuesos)
+    val huecoMax= huecoMaximoEnX(nuevosSabuesos)
 
-  (movilidadLiebre, huecoMax, distLiebre)
+  ( huecoMax, distLiebre)
     }
 
