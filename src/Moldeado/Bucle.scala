@@ -44,37 +44,40 @@ def bucleJuego(tablero: TableroJuego, estado: Estado,  modoIA: Boolean): Jugador
 
 val movimientos=
   if (estado.turno == Jugador.liebre) then
-MovimientoLiebre.movimientosPosibles(tablero, estado)
+MovimientoLiebre.movimientosPosibles(tablero, estado).toVector
 else
-MovimientoSabueso.movimientosPosibles(tablero, estado)
+MovimientoSabueso.movimientosPosibles(tablero, estado).toVector
 
 if !modoIA{
 if (estado.turno == Jugador.liebre) then
 println("Liebre, tus movimientos son:")
-else
+  if (estado.turno == Jugador.Sabueso) then
 println("Sabueso, tus movimientos son:")
 
-val movsIndexables = movimientos.toVector
-movsIndexables.zipWithIndex.foreach { case (pos, i) => println(s"${i + 1}) $pos") }
+movimientos.zipWithIndex.foreach { case (pos, i) => println(s"${i + 1}) $pos") }
 
 val eleccion = scala.io.StdIn.readLine().toInt
 val seleccionIndex = eleccion - 1
-val destino = movsIndexables(seleccionIndex)}
+movimientos(seleccionIndex)}
 if modo IA {
   if (estado.turno == Jugador.sabueso) then
   println("Sabueso, tus movimientos son:")
-  else (
+  movimientos.zipWithIndex.foreach { case (pos, i) => println(s"${i + 1}) $pos") }
 
-    val puntuacionmovimiento = movimientos.evaluarmovimiento
- movimientos.zip(puntuacionmovimiento).zipWithIndex.foreach {
-   case ((mov, puntuacion), i) =>
-     println(s"${i + 1}) $mov — Valoración: $puntuacion")}
+  val eleccion = scala.io.StdIn.readLine().toInt
+  val seleccionIndex = eleccion - 1
+  movimientos(seleccionIndex)}
 
-  val movelegido = puntuacionmovimiento
-      .groupBy(_._1).maxBy(_._1)._2
-      .groupBy(_._2).maxBy(_._1)._2
-      .apply(Random.nextInt(_ .size))
-  val destino = movelegido.toVector
+  if (estado.turno == Jugador.Liebre) then
+  println("Movimientos IA liebre:")
+  val puntuaciones = movimientos.map { destino =>
+    val h = MovimientoLiebre.evaluarMovimiento(tablero, estado, destino)
+    (destino, h)}
+  puntuaciones.zipWithIndex.foreach { case ((mov, (a,b)), i) =>
+    println(s"${i + 1}) $mov — Valoración: ($a, $b)")
+  }
+  puntuaciones.maxBy { case (_, (a,b)) => (a,b) }._1
+
 
 
   )

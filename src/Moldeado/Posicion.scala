@@ -39,8 +39,7 @@ case class Posicion(col: Columna, fila: Fila):
     def y: Int = fila.y
 
   def manhattan(other: Posicion):
-  Int = (x - other.x).abs + (y - other.y).abs
-
+  math.abs(this.x - other.x) + math.abs(this.y - other.y)
 
 
   object TableroClasicoLyS extends TableroJuego:
