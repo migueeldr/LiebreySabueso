@@ -38,8 +38,12 @@ case class Posicion(col: Columna, fila: Fila):
 
     def y: Int = fila.y
 
+  def manhattan(other: Posicion):
+  Int = (x - other.x).abs + (y - other.y).abs
 
-object TableroClasicoLyS extends TableroJuego:
+
+
+  object TableroClasicoLyS extends TableroJuego:
     // --- Pintado ---
     private def pintarNodo(p: Posicion, estado: Estado): String =
 

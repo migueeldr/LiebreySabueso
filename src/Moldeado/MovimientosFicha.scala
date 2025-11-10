@@ -4,7 +4,14 @@ sealed trait MovimientoFicha:
   def movimientosPosibles(tablero: TableroJuego, estado: Estado): Set[Posicion]
 
 case object MovimientoLiebre extends MovimientoFicha:
+  def evaluarMovimiento(tablero: TableroJuego, estado: Estado, destino: Posicion): (Int, Int)
+      if (estado.Liebre.x => estado.Sabuesos.x) {
+    (Posicion.manhattan(posicionMetaLiebre),Posicion.manhattan(estado.sabuesos))
+      else
+    val sabuesorebasados = estado.sabuesos.filter(_.x <= Posicion.x )
+    (sabuesorebasados.size),Posicion.manhattan(estado.sabuesos))
 
+  }
   override def movimientosPosibles(tablero: TableroJuego, estado: Estado): Set[Posicion] =
     tablero.movimientosDesde(estado.liebre).filterNot(estado.ocupadas.contains)
 
@@ -25,10 +32,11 @@ case object MovimientoSabueso extends MovimientoFicha:
       tablero.movimientosDesde(s).filterNot(p =>p.x < s.x).filterNot(estado.ocupadas.contains)
     }
 
-  def movimientosPosiblesPorSabueso(tab: TableroJuego, est: Estado): Set[(Posicion, Posicion)] =
+  def movimientosPosiblesPorSabueso(tab: TableroJuego, est: Estado): Set[(Posicion, Posicion)] = {
     est.sabuesos.flatMap { origen =>
       tab.movimientosDesde(origen)
         .filter(dest => dest.x >= origen.x && !est.ocupadas.contains(dest))
         .map(dest => (origen, dest))
     }
+  }
 
